@@ -2,7 +2,7 @@
 
 An organizer tool for running the Brunei Barista Team Competition — a head-to-head team coffee competition. Built as a single HTML file. No server, no dependencies, no installation required.
 
-**[→ Open the app](https://yourusername.github.io/brunei-barista-championship/)**
+**[→ Open the app](https://mfosa7222.github.io/BBTC-Score/)**
 
 ---
 
