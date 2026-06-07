@@ -2,7 +2,7 @@
 
 **Coffee competition platform for organizers.** Single-folder web app — no server, no build step, no dependencies.
 
-**[→ Open Seduh Score](https://mfosa.github.io/seduh-score/)**
+**[→ Open Seduh Score](https://mfosa7222.github.io/Seduh-Score/)**
 
 ---
 
@@ -21,7 +21,7 @@
 ### GitHub Pages (recommended)
 1. Push this folder to a public GitHub repo
 2. Go to **Settings → Pages → Deploy from branch → main / (root)**
-3. Share `https://yourusername.github.io/seduh-score/`
+3. Share `https://mfosa7222.github.io/Seduh-Score/`
 
 ### Local
 Download the folder and open `index.html` in any modern browser. No internet required.
