@@ -903,6 +903,13 @@ function bind(){
     const nv=!m[k][bn];if(bn==='fastest'&&nv)m[ok][bn]=false;
     m[k][bn]=nv;render();
   }));
+
+  // Demo
+  on('load-demo','click',()=>{
+    if(confirm('Load demo data? This will replace your current data.')){
+      loadBBTCDemo();render();
+    }
+  });
 }
 
 render();
