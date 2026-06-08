@@ -662,7 +662,7 @@ function render(){
 
 function rMain(){
   const done=S.matches.filter(m=>m.done).length;
-  return '<div class="hdr"><div class="hdr-ac"></div><div><div class="hdr-s">Brunei</div><div class="hdr-t">Barista Team Championship</div></div><div class="hdr-btns"><button class="btn-hdr btn-am" id="tmrbtn">⏱ Timer</button><button class="btn-hdr btn-am" id="pubview">📺 Audience</button><button class="btn-hdr btn-bl" id="exportbtn">📄 PDF</button><button class="btn-hdr btn-gn" id="csvbtn">📊 CSV</button><button class="btn-hdr btn-rd" id="resetbtn">↺ Reset</button><div class="badge">'+done+'/'+S.matches.length+' done</div></div></div>'
+  return '<div class="hdr"><div class="hdr-ac"></div><div><div class="hdr-s">Brunei</div><div class="hdr-t">Barista Team Championship</div></div><div class="hdr-btns"><button class="btn-hdr btn-o" id="homebtn">← Home</button><button class="btn-hdr btn-am" id="tmrbtn">⏱ Timer</button><button class="btn-hdr btn-am" id="pubview">📺 Audience</button><button class="btn-hdr btn-bl" id="exportbtn">📄 PDF</button><button class="btn-hdr btn-gn" id="csvbtn">📊 CSV</button><button class="btn-hdr btn-rd" id="resetbtn">↺ Reset</button><div class="badge">'+done+'/'+S.matches.length+' done</div></div></div>'
   +'<div class="tabs">'+[['setup','Setup'],['prelims','Prelims ('+S.matches.filter(m=>m.round==='preliminary').length+')'],['bracket','Bracket'],['history','History'],['standings','Standings']].map(([t,l])=>'<button class="tbtn'+(S.tab===t?' on':'')+'" data-tab="'+t+'">'+l+'</button>').join('')+'</div>'
   +'<div class="body">'+(S.tab==='setup'?rSetup():S.tab==='prelims'?rPrelims():S.tab==='bracket'?rBracket():S.tab==='history'?rHistory():rStandings())+'</div>';
 }
@@ -780,6 +780,7 @@ function bind(){
   const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn);};
 
   // Overlays
+  on('homebtn','click',()=>{window.location.href='../index.html';});
   on('pubview','click',()=>showAudience());
   on('aud-close','click',()=>document.getElementById('aud-overlay').classList.remove('show'));
   on('exportbtn','click',()=>generatePDF());
@@ -873,11 +874,8 @@ function bind(){
   on('fin','click',()=>{
     const m=S.matches.find(x=>x.id===S.sid);
     if(m){m.done=true;updateBracketAfterMatch(m.id);}
-    S.sid=null;S.tab=m&&m.bracketSlot?'bracket':'matches';
-    // If bracket match, go back to bracket tab
-    if(m&&m.bracketSlot)S.tab='bracket'; else S.tab=S.tab==='prelims'?'prelims':'matches';
-    // Actually just go to bracket if bracket slot, else prelims
-    if(m)S.tab=m.bracketSlot?'bracket':'prelims';
+    S.sid=null;
+    S.tab=m?(m.bracketSlot?'bracket':'prelims'):'prelims';
     render();
   });
 
