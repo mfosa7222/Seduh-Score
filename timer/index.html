@@ -82,9 +82,9 @@ body{
   transition:color .2s;
 }
 
-/* State colours */
-body.running .tmr-display{color:#D97706}
-body.done .tmr-display{color:#EF4444;animation:blink 1s ease-in-out infinite}
+/* State colours — react to classes timer.js puts on #tmr-overlay sentinel */
+body:has(#tmr-overlay.running) .tmr-display{color:#D97706}
+body:has(#tmr-overlay.done) .tmr-display{color:#EF4444;animation:blink 1s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* Controls */
@@ -111,16 +111,16 @@ body.done .tmr-display{color:#EF4444;animation:blink 1s ease-in-out infinite}
 }
 .tmr-fs-btn:hover{border-color:#6B7280;color:#F9FAFB}
 
-/* ── Fullscreen mode ── */
-body.fs .timer-hdr{display:none}
-body.fs .timer-stage{padding:0;justify-content:center}
-body.fs .tmr-presets{display:none}
-body.fs .tmr-controls{display:none}
-body.fs .tmr-footer{display:none}
-body.fs .tmr-display{font-size:30vw}
-body.fs .fs-exit{display:flex!important}
+/* ── Fullscreen mode — react to .fs class timer.js puts on #tmr-overlay sentinel ── */
+body:has(#tmr-overlay.fs) .timer-hdr{display:none}
+body:has(#tmr-overlay.fs) .timer-foot{display:none}
+body:has(#tmr-overlay.fs) .timer-stage{padding:0;justify-content:center}
+body:has(#tmr-overlay.fs) .tmr-presets{display:none}
+body:has(#tmr-overlay.fs) .tmr-controls{display:none}
+body:has(#tmr-overlay.fs) .tmr-footer{display:none}
+body:has(#tmr-overlay.fs) .tmr-display{font-size:30vw;cursor:pointer}
 
-/* Exit fullscreen hint — always visible in fs mode */
+/* Exit fullscreen hint — visible only in fs mode */
 .fs-exit{
   display:none;
   position:fixed;
@@ -133,10 +133,7 @@ body.fs .fs-exit{display:flex!important}
   z-index:10;
 }
 .fs-exit:hover{color:#F9FAFB;border-color:#6B7280}
-body.fs .fs-exit{display:flex}
-
-/* In fullscreen, clicking the display exits */
-body.fs .tmr-display{cursor:pointer}
+body:has(#tmr-overlay.fs) .fs-exit{display:flex}
 
 /* ── Seduh Score footer ── */
 .timer-foot{
@@ -150,7 +147,6 @@ body.fs .tmr-display{cursor:pointer}
   flex-wrap:wrap;
   gap:8px;
 }
-body.fs .timer-foot{display:none}
 .timer-foot-brand{font-size:11px;color:#4B5563;font-weight:600;letter-spacing:.04em}
 .timer-foot-brand span{color:#6B7280}
 .timer-foot-hint{font-size:11px;color:#374151}
@@ -162,6 +158,10 @@ body.fs .timer-foot{display:none}
 </style>
 </head>
 <body>
+
+<!-- Sentinel div — timer.js attaches running/done/fs classes here.
+     Kept hidden; CSS body:has() selectors react to its class changes. -->
+<div id="tmr-overlay" style="display:none" aria-hidden="true"></div>
 
 <!-- Header -->
 <header class="timer-hdr">
@@ -221,33 +221,15 @@ body.fs .timer-foot{display:none}
 
 <script src="../shared/timer.js"></script>
 <script>
-// Timer.js uses IDs to find elements — init() wires them all up.
-// The standalone page doesn't use Timer.open() / Timer.close() because
-// the timer IS the page; it's always visible.
+// timer.js wires all button listeners and manages state classes on #tmr-overlay.
+// The sentinel div above receives those classes; body:has() CSS reacts to them.
 Timer.init();
-
-// Default to 7 min on load (Throwdown / Girls Got Drip format)
 Timer.set(420);
 
-// Fullscreen toggle — hides header/footer/controls, maximises display
-const fsBtn   = document.getElementById('tmr-fs');
-const fsExit  = document.getElementById('fs-exit');
-
-function enterFS() { document.body.classList.add('fs'); }
-function exitFS()  { document.body.classList.remove('fs'); }
-
-fsBtn.addEventListener('click',  enterFS);
-fsExit.addEventListener('click', exitFS);
-
-// Tap the display to exit fullscreen (works on mobile, no keyboard needed)
-document.getElementById('tmr-display').addEventListener('click', () => {
-  if (document.body.classList.contains('fs')) exitFS();
-});
-
-// Escape key fallback for desktop
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && document.body.classList.contains('fs')) exitFS();
-});
+// fs-exit button and Escape are additional exit paths (timer.js Escape also fires)
+const fsExit = document.getElementById('fs-exit');
+const ovl    = document.getElementById('tmr-overlay');
+fsExit.addEventListener('click', () => ovl.classList.remove('fs'));
 </script>
 </body>
 </html>
