@@ -2,6 +2,8 @@
 
 **Coffee competition platform for organizers.** Single-folder web app — no server, no build step, no dependencies.
 
+Built by [Firdaus Omar](https://github.com/mfosa7222) · [Grey Matter Coffee Werks](https://greymattercoffeewerks.com), Brunei
+
 **[→ Open Seduh Score](https://mfosa7222.github.io/Seduh-Score/)**
 
 ---
@@ -11,8 +13,19 @@
 | Module | Status | Format |
 |---|---|---|
 | **BBTC** | ✅ Live | Brunei Barista Team Championship — head-to-head team scoring with seeded knockout bracket |
-| **Throwdown 1v1** | ✅ Live | Individual knockout bracket with randomized seeding and optional redemption round |
-| **Liga Seduh** | 🔜 Planned | Round robin league — season standings and match scheduling |
+| **Throwdown 1v1** | ✅ Live | Individual knockout bracket with randomized seeding, redemption round, wild card revival |
+| **Liga Seduh** | 🔜 v4.0 | Round robin league — season standings and match scheduling |
+
+---
+
+## Shared Tools
+
+| Component | File | Purpose |
+|---|---|---|
+| Timer | `shared/timer.js` | 5 / 7 / 10 / 15 min countdown with fullscreen court display |
+| Audience View | `shared/audience.js` | Light-theme projector overlay — standings and results |
+| Storage | `shared/storage.js` | localStorage wrapper with consistent key management |
+| Theme | `shared/theme.css` | Design system — colours, typography, components |
 
 ---
 
@@ -38,58 +51,66 @@ Team head-to-head competition. The secretary enters cup-by-cup token scores for 
 
 **Workflow:** Setup → Prelims → Standings (set QF spots) → Bracket → Score → Export PDF/CSV
 
+**Features:** Judge selection per match · PDF export with round headers · Audience view with colour-coded match rows · Demo mode · JSON save/load · Home navigation
+
 ---
 
 ## Throwdown 1v1
 
 Individual knockout bracket. Judges vote for a winner per match.
 
-**Judges:** 3 to 5 per match (odd number recommended — no tie possible)  
-**Bracket:** Randomized seeding · automatic byes for odd participant counts  
-**Redemption:** Optional per-round — losers get a second chance, winners merge back into the main bracket (not available from QF and above)
+**Scoring:** Variable judge count · majority vote per match  
+**Rounds:** Configurable · Round 1 → QF → SF → Final  
+**Redemption:** Optional pool — losers re-enter, capped per round  
+**Wild card:** Optional per-round random revival of one loser
 
-**Workflow:** Setup (participants, judges, redemption config) → Generate Bracket → Score each match → Champion
+**Workflow:** Setup → Bracket → Score matches → Audience view → Export
 
----
-
-## Shared components
-
-All modules share:
-- **⏱ Timer** — 5/10/15 min countdown with fullscreen court display
-- **📺 Audience view** — light-theme overlay for projector
-- **💾 Storage** — localStorage persistence per module, survives refresh
-- **🎨 Theme** — unified design system (`shared/theme.css`)
+**Features:** Colour-coded rounds (grey / blue / amber / green / purple) · Revival markers (⬆ R) · Judge list record-keeping · Audience overlay with single-panel results · Demo mode · JSON save/load · Home navigation
 
 ---
 
-## File structure
+## Liga Seduh *(Planned — v4.0)*
 
-```
-seduh-score/
-├── index.html              ← dashboard / module selector
-├── bbtc/
-│   └── index.html          ← BBTC module
-├── throwdown/
-│   └── index.html          ← Throwdown 1v1 module
-├── shared/
-│   ├── theme.css           ← design tokens and shared styles
-│   ├── timer.js            ← countdown timer component
-│   ├── audience.js         ← audience overlay component
-│   └── storage.js          ← localStorage wrapper
-├── CHANGELOG.md
-└── README.md
-```
+Round robin league format. Every participant plays a defined number of matches. Live cumulative standings update after each result. Supports multi-session event days (season play across multiple dates).
 
 ---
 
-## Built by
+## Platform Roadmap
 
-Firdaus Omar · Grey Matter Coffee Werks, Brunei  
-[@mfosaminumkopi](https://instagram.com/mfosaminumkopi) · Podcast: Mfosa Sembang Kopi  
-Competition record: Malaysian Aeropress Championship · ASEAN Barista Team Championship · Liga Seduh Bawah Tanah (founder)
+| Phase | Versions | Focus |
+|---|---|---|
+| **Foundation** | Now → v4.0 | Three solid modules tested in real events |
+| **Brand & IP** | v4.1 → v4.5 | Grey Matter Coffee Werks branding, custom domain, licensing groundwork |
+
+See the Roadmap PDF for detailed version milestones.
 
 ---
 
-## License
+## Data & Privacy
 
-MIT — free to use, adapt, and share with the coffee community.
+All competition data is stored locally in the browser (`localStorage`). No data is sent to any server. Sessions can be exported as JSON for backup and reloaded at any time.
+
+---
+
+## IP & Licensing
+
+Seduh Score is built and maintained by Firdaus Omar / Grey Matter Coffee Werks, Brunei.  
+© 2025 Grey Matter Coffee Werks. All rights reserved.
+
+Organizational licensing available for coffee associations, competition bodies, and event organisers in Brunei and Southeast Asia. Contact via Grey Matter Coffee Werks.
+
+---
+
+## Development
+
+**Stack:** Pure HTML, CSS, JavaScript — no framework, no build step  
+**Repo:** `github.com/mfosa7222/Seduh-Score`  
+**Live:** `mfosa7222.github.io/Seduh-Score`  
+**Local path:** `C:\Users\mfosa\OneDrive\Documents\Seduh-Score`
+
+**Documentation:**
+- `CONVENTIONS.md` — code patterns, token names, git workflow
+- `CHANGELOG.md` — version history, what changed and when
+
+**Current version:** v3.5.2
